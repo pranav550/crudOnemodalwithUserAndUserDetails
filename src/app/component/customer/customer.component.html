@@ -1,0 +1,113 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Add New Employee -->
+            <div class="d-flex flex-row-reverse">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" (click)=openAddDialog()>Add New Employee</button>
+            </div>
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">{{headerName}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeDialog()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+                                <div class="form-group">
+                                    <label for="id">Id</label>
+                                    <input type="text" class="form-control" placeholder="Enter id" formControlName="id" required>
+                                    <div *ngIf="userForm.controls['id'].invalid && (userForm.controls['id'].touched || userForm.controls['id'].dirty)">
+                                        <label class="text-danger" *ngIf="userForm.controls['id'].hasError('required')"> Id is Required</label>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter Name" formControlName="name" required>
+                                    <div *ngIf="userForm.controls['name'].invalid && (userForm.controls['name'].touched || userForm.controls['name'].dirty)">
+                                        <label class="text-danger" *ngIf="userForm.controls['id'].hasError('required')"> Name is Required</label>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Select Gender:</label>
+                                    <input type="radio" formControlName="gender" value="male" required> Male
+                                    <input type="radio" formControlName="gender" value="female" required> Female
+                                    <div *ngIf="userForm.controls['gender'].invalid && (userForm.controls['gender'].touched || userForm.controls['gender'].dirty)">
+                                        <label class="text-danger" *ngIf="userForm.controls['gender'].hasError('required')"> Gender is Required</label>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Category</label>
+                                    <select formControlName="category" class="form-control" name="category" id="category" required>
+                                       <option [ngValue]="null">Select Category</option>
+                                     <option [value]="category" *ngFor="let category of category">{{category}}</option>
+                                    </select>
+                                    <div *ngIf="userForm.controls['category'].invalid && (userForm.controls['category'].touched || userForm.controls['category'].dirty)">
+                                        <label class="text-danger" *ngIf="userForm.controls['category'].hasError('required')"> Category is Required</label>
+
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" [disabled]="!userForm.valid" *ngIf="isAdd">Add</button>
+                                <button type="submit" class="btn btn-primary" [disabled]="!userForm.valid" *ngIf="isEdit" (click)="closedEdit()">Edit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add New Employee end-->
+            <!-- Employee Listing Table -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let emp of Employees">
+                                <tr>
+                                    <td>{{emp.id}}</td>
+                                    <td>{{emp.name}}</td>
+                                    <td>{{emp.gender}}</td>
+                                    <td>{{emp.category}}</td>
+                                    <td>
+                                        <button (click)="viewEmployee(emp)" class="btn btn-primary">View</button>
+                                        <button (click)="editEmployee(emp)" class="btn btn-info" data-toggle="modal" data-target="#exampleModalLong" (click)=openEditDialog()>Edit</button>
+                                        <button (click)="deleteEmployee(emp)" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- View Employee Records -->
+                    <div class="col-md-2">
+                        <div class="card" style="width: 18rem;" *ngIf="viewTemp.length>0 && (multiview===viewEmp)">
+                            <div class="card-header">
+                                Employee Information
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{viewEmp.id}}</li>
+                                <li class="list-group-item">{{viewEmp.name}}</li>
+                                <li class="list-group-item">{{viewEmp.gender}}</li>
+                                <li class="list-group-item">{{viewEmp.category}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- View Employee Records End -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Employee Listing Table end-->
